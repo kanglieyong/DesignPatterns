@@ -50,7 +50,7 @@ void Logger::log(const vector<string>& inMessages, const string& inLogLevel)
   for (size_t i = 0; i < inMessages.size(); i++) logHelper(inMessages[i], inLogLevel);
 }
 
-void Logger::logHelper(const std::string& inMessage, const std::string& inLogLevel)
+void Logger::logHelper(const string& inMessage, const string& inLogLevel)
 {
   mOutputStream << inLogLevel << ": " << inMessage << endl;
 }
