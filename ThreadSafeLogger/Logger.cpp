@@ -1,41 +1,34 @@
 #include "Logger.h"
+#include <stdexcept>
 
-using std::string;
+using namespace std;
 
 const string Logger::kLogLevelDebug = "DEBUG";
-const string Logger::kLogLevelInfo = "INFO";
 const string Logger::kLogLevelError = "ERROR";
-
+const string Logger::kLogLevelInfo = "INFO";
 const char* const Logger::kLogFileName = "log.out";
-
 Logger* Logger::pInstance = nullptr;
-mutex Logger::aMutex;
+
+mutex Logger::sMutex;
 
 Logger& Logger::instance()
 {
   static Cleanup cleanup;
-  lock_guard<mutex> guard(sMutex);
+  lock_guard<mutex> gurad(sMutex);
   if (pInstance == nullptr) pInstance = new Logger();
-  
+
   return *pInstance;
 }
 
-Logger::Cleanup::~Cleanup()
+Logger::~Logger()
 {
-  lock_guard<mutex> guard(Logger::sMutex);
-  delete Logger::pInstance;
-  Logger::pInstance = nullptr;
+  mOutputStream.close();
 }
 
 Logger::Logger()
 {
   mOutputStream.open(kLogFileName, ios_base::app);
   if (!mOutputStream.good()) throw runtime_error("Unable to initialize the Logger!");
-}
-
-Logger::~Logger()
-{
-  mOutputStream.close();
 }
 
 void Logger::log(const string& inMessage, const string& inLogLevel)
@@ -53,4 +46,11 @@ void Logger::log(const vector<string>& inMessages, const string& inLogLevel)
 void Logger::logHelper(const string& inMessage, const string& inLogLevel)
 {
   mOutputStream << inLogLevel << ": " << inMessage << endl;
+}
+
+Logger::Cleanup::~Cleanup()
+{
+  lock_guard<mutex> guard(Logger::sMutex);
+  delete Logger::pInstance;
+  Logger::pInstance = nullptr;
 }
