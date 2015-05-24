@@ -7,7 +7,8 @@ class Singleton
   static Singleton* Instance();
 
  protected:
-  Singleton() {};
+  Singleton() {}
+  ~Singleton() { delete _instance; }
 
  private:
   static Singleton* _instance;
@@ -19,7 +20,7 @@ Singleton* Singleton::_instance = 0;
 
 Singleton* Singleton::Instance()
 {
-  if (_instance == 0) _instance = new Singleton;
+  if (_instance == 0) _instance = new Singleton();
   
   return _instance;
 }
