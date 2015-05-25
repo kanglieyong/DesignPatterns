@@ -8,7 +8,7 @@ class CarFactory
  public:
   CarFactory();
   
-  Car* request();
+  Car* requestCar();
   int getNumCarsInProduction() const;
 
  protected:
