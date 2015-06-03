@@ -1,7 +1,16 @@
 #include "Logger.h"
 #include <stdexcept>
+#include <cstddef>
 
-using namespace std;
+using std::size_t;
+using std::endl;
+using std::string;
+using std::vector;
+using std::runtime_error;
+using std::mutex;
+using std::lock_guard;
+using std::ofstream;
+using std::ios_base;
 
 const string Logger::kLogLevelDebug = "DEBUG";
 const string Logger::kLogLevelError = "ERROR";
